@@ -2,6 +2,7 @@ package com.youorg.selfhealing.simulation;
 
 import com.youorg.selfhealing.health.HealthState;
 import com.youorg.selfhealing.health.HealthStateManager;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Component
 public class MemoryStressSimulator {
 
     private final HealthStateManager healthStateManager;
@@ -20,31 +22,53 @@ public class MemoryStressSimulator {
     }
 
     @GetMapping("/simulate/memory")
-    public String stressMemory() {
+public String stressMemory() {
 
-        healthStateManager.setCurrentState(
-                HealthState.DEGRADED
-        );
+    healthStateManager.setCurrentState(
+            HealthState.DEGRADED
+    );
 
-        List<byte[]> memoryConsumer = new ArrayList<>();
+    new Thread(() -> {
 
         try {
 
-            for (int i = 0; i < 100; i++) {
+            Thread.sleep(15000);
 
-                memoryConsumer.add(
-                        new byte[10 * 1024 * 1024]
-                );
+            healthStateManager.setCurrentState(
+                    HealthState.UP
+            );
 
-                Thread.sleep(100);
-            }
+            System.out.println(
+                    "System recovered automatically"
+            );
 
-        } catch (Exception e) {
-
-            return "Memory stress interrupted";
-
+        } catch (Exception ignored) {
         }
 
-        return "Memory stress simulation completed";
+    }).start();
+
+    List<byte[]> memoryConsumer = new ArrayList<>();
+
+    try {
+
+        for (int i = 0; i < 20; i++) {
+
+            memoryConsumer.add(
+                    new byte[5 * 1024 * 1024]
+            );
+
+            Thread.sleep(100);
+        }
+
+    } catch (Exception e) {
+
+        return "Memory stress interrupted";
+
     }
+
+    return "Memory stress simulation started";
+}
+   
+
+      
 }

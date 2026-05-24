@@ -1,14 +1,17 @@
 package com.youorg.selfhealing.autoconfig;
 
 import com.youorg.selfhealing.health.HealthStateManager;
-import com.youorg.selfhealing.health.SelfHealingHealthIndicator;
 import com.youorg.selfhealing.lifecycle.StartupListener;
+import com.youorg.selfhealing.recovery.RecoveryManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "com.youorg.selfhealing")
+@ComponentScan(basePackages = {
+        "com.youorg.selfhealing.health",
+        "com.youorg.selfhealing.simulation"
+})
 public class SelfHealingAutoConfiguration {
 
     @Bean
@@ -22,10 +25,11 @@ public class SelfHealingAutoConfiguration {
     }
 
     @Bean
-    public SelfHealingHealthIndicator selfHealingHealthIndicator(
+    public RecoveryManager recoveryManager(
             HealthStateManager healthStateManager
     ) {
-        return new SelfHealingHealthIndicator(healthStateManager);
+        return new RecoveryManager(
+                healthStateManager
+        );
     }
-
 }
