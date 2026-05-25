@@ -21,11 +21,12 @@ public class MemoryStressSimulator {
 
     public MemoryStressSimulator(
             HealthStateManager healthStateManager,
-            MetricsManager metricsManager
+            MetricsManager metricsManager,
+            RecoveryManager recoveryManager
     ) {
         this.healthStateManager = healthStateManager;
         this.metricsManager = metricsManager;
-        this.recoveryManager = null;
+        this.recoveryManager = recoveryManager;
     }
 
     @GetMapping("/simulate/memory")
@@ -44,6 +45,8 @@ public String stressMemory() {
             healthStateManager.setCurrentState(
                     HealthState.UP
             );
+
+            metricsManager.recordRecovery();
 
             System.out.println(
                     "System recovered automatically"

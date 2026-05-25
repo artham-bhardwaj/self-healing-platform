@@ -11,7 +11,9 @@ import com.youorg.selfhealing.metrics.MetricsManager;
 @Configuration
 @ComponentScan(basePackages = {
         "com.youorg.selfhealing.health",
-        "com.youorg.selfhealing.simulation"
+        "com.youorg.selfhealing.simulation",
+        "com.youorg.selfhealing.controller",
+        "com.youorg.selfhealing.metrics"
 })
 public class SelfHealingAutoConfiguration {
 
