@@ -6,6 +6,7 @@ import com.youorg.selfhealing.recovery.RecoveryManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import com.youorg.selfhealing.metrics.MetricsManager;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -25,11 +26,18 @@ public class SelfHealingAutoConfiguration {
     }
 
     @Bean
-    public RecoveryManager recoveryManager(
-            HealthStateManager healthStateManager
-    ) {
-        return new RecoveryManager(
-                healthStateManager
-        );
+public RecoveryManager recoveryManager(
+        HealthStateManager healthStateManager,
+        MetricsManager metricsManager
+) {
+    return new RecoveryManager(
+            healthStateManager,
+            metricsManager
+    );
+}
+
+    @Bean
+    public MetricsManager metricsManager(){
+        return new MetricsManager();
     }
 }

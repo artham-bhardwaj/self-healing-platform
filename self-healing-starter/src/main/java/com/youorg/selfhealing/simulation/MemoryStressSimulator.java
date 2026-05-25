@@ -2,10 +2,12 @@ package com.youorg.selfhealing.simulation;
 
 import com.youorg.selfhealing.health.HealthState;
 import com.youorg.selfhealing.health.HealthStateManager;
+import com.youorg.selfhealing.metrics.MetricsManager;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.youorg.selfhealing.recovery.RecoveryManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +16,16 @@ import java.util.List;
 public class MemoryStressSimulator {
 
     private final HealthStateManager healthStateManager;
+    private final MetricsManager metricsManager;
+    private final RecoveryManager recoveryManager;
 
     public MemoryStressSimulator(
-            HealthStateManager healthStateManager
+            HealthStateManager healthStateManager,
+            MetricsManager metricsManager
     ) {
         this.healthStateManager = healthStateManager;
+        this.metricsManager = metricsManager;
+        this.recoveryManager = null;
     }
 
     @GetMapping("/simulate/memory")
@@ -27,7 +34,7 @@ public String stressMemory() {
     healthStateManager.setCurrentState(
             HealthState.DEGRADED
     );
-
+    metricsManager.recordDegradation();
     new Thread(() -> {
 
         try {
