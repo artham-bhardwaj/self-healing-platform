@@ -1,5 +1,14 @@
 services:
 
+  app:
+    build:
+      context: ./sample-application
+
+    container_name: self-healing-app
+
+    ports:
+      - "8080:8080"
+
   prometheus:
     image: prom/prometheus
 
@@ -11,6 +20,9 @@ services:
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
 
+    depends_on:
+      - app
+
   grafana:
     image: grafana/grafana
 
@@ -21,3 +33,6 @@ services:
 
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+
+    depends_on:
+      - prometheus
