@@ -7,7 +7,7 @@ services:
     numInstances: 1
     autoDeploy: true
     dockerfilePath: ./sample-application/Dockerfile
-    dockerContext: ./sample-application
+    dockerContext: ./
     envVars:
       - key: PORT
         value: 8080
