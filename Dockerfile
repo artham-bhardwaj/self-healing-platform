@@ -8,8 +8,11 @@ COPY pom.xml .
 COPY self-healing-starter/ ./self-healing-starter/
 COPY sample-application/ ./sample-application/
 
-# Build the entire project
-RUN mvn clean install -DskipTests -q
+# Build the entire project with optimized Maven settings
+RUN mvn clean install -DskipTests -q -B -V \
+    -Dorg.slf4j.simpleLogger.defaultLogLevel=info \
+    -Dmaven.artifact.threads=10 \
+    && echo "✓ Maven build completed"
 
 # Stage 2 - Runtime with just JRE
 FROM eclipse-temurin:21-jre
