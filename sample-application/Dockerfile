@@ -1,5 +1,5 @@
 # Multi-stage build: Stage 1 - Build with Maven
-FROM eclipse-temurin:21-jdk AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 WORKDIR /build
 
@@ -9,8 +9,7 @@ COPY ../self-healing-starter/ ./self-healing-starter/
 COPY . ./sample-application/
 
 # Build the entire project with optimized Maven settings
-RUN mvn clean install -DskipTests -q -B -V \
-    -Dorg.slf4j.simpleLogger.defaultLogLevel=info \
+RUN mvn clean install -DskipTests -q -B \
     -Dmaven.artifact.threads=10 \
     && echo "✓ Maven build completed"
 
