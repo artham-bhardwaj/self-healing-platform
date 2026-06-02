@@ -3,10 +3,10 @@ FROM eclipse-temurin:21-jdk as builder
 
 WORKDIR /build
 
-# Copy parent pom and modules
-COPY pom.xml .
-COPY self-healing-starter/ ./self-healing-starter/
-COPY sample-application/ ./sample-application/
+# Copy parent pom and modules from parent directory
+COPY ../pom.xml .
+COPY ../self-healing-starter/ ./self-healing-starter/
+COPY . ./sample-application/
 
 # Build the entire project
 RUN mvn clean install -DskipTests -q
@@ -26,3 +26,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD java -cp app.jar -Dspring.boot.project.name=app health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+

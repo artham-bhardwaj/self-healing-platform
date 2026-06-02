@@ -6,7 +6,7 @@ services:
     region: oregon
     numInstances: 1
     autoDeploy: true
-    dockerfilePath: ./sample-application/Dockerfile
+    dockerfilePath: ./Dockerfile
     dockerContext: ./
     envVars:
       - key: PORT
