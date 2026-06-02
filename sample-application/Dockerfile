@@ -1,5 +1,5 @@
 # Multi-stage build: Stage 1 - Build with Maven
-FROM eclipse-temurin:21-jdk as builder
+FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /build
 
