@@ -1,256 +1,193 @@
 # Self-Healing Platform
 
-A Spring Boot 3.5.0 microservices platform with autonomous health monitoring, self-healing capabilities, and comprehensive observability through metrics collection and health history tracking.
+A production-ready Spring Boot 3.5.0 self-healing platform with autonomous health monitoring, automated recovery workflows, and health event history tracking. Designed for resilience and observability.
+
+**🌐 Live Demo:** https://self-healing-platform.onrender.com
 
 ## 🎯 Overview
 
-The Self-Healing Platform is designed to provide autonomous health monitoring and recovery mechanisms for Spring Boot applications. It automatically detects degraded states and triggers recovery strategies without manual intervention.
+The Self-Healing Platform provides autonomous health monitoring and recovery mechanisms for Spring Boot applications. It automatically detects degraded states, triggers recovery strategies, and maintains a complete audit trail of health events—all without manual intervention.
 
 ### Key Features
 
-- **Autonomous Health Monitoring** - Real-time system health state management
-- **Self-Healing Capabilities** - Automatic recovery strategies for degraded states
-- **Health History Tracking** - Complete audit trail of health events and recoveries
-- **Custom Metrics** - Prometheus-compatible metrics for recovery and degradation events
-- **Spring Boot Actuator Integration** - Full health endpoint support with component details
-- **Docker Ready** - Complete containerization with Prometheus and Grafana stack
-- **Production-Grade** - Condition-based auto-configuration for safe bean management
+- ✅ **Autonomous Health Monitoring** - Real-time system health state management
+- ✅ **Self-Healing Capabilities** - Automatic recovery strategies for degraded states  
+- ✅ **Health History Tracking** - Complete audit trail of health events and recoveries
+- ✅ **API Simulation** - Trigger CPU/memory degradation for testing recovery workflows
+- ✅ **Spring Boot Actuator** - Full health endpoint support with component details
+- ✅ **Custom Metrics** - Prometheus-compatible metrics for recovery events (optional)
+- ✅ **Production-Grade** - Condition-based auto-configuration, Docker-ready, Render-deployed
 
 ## 📋 Prerequisites
 
 - **Java 21** (OpenJDK or equivalent)
 - **Maven 3.9+** or use included `mvnw`
-- **Docker & Docker Compose** (for container deployment)
+- **Docker & Docker Compose** (for local development)
 - **Git** (for version control)
 
-## 🏗️ Project Structure
+## 🚀 Deployment
 
-```
-self-healing-platform/
-├── self-healing-starter/        # Auto-configuration library for self-healing features
-│   ├── src/main/java/
-│   │   └── com/youorg/selfhealing/
-│   │       ├── autoconfig/      # Spring Boot auto-configuration
-│   │       ├── controller/      # REST endpoints (HistoryController, MetricsController)
-│   │       ├── health/          # Health state management
-│   │       ├── history/         # Health event history tracking
-│   │       ├── lifecycle/       # Startup listeners
-│   │       ├── metrics/         # Custom metrics and Prometheus integration
-│   │       ├── recovery/        # Recovery strategies
-│   │       └── simulation/      # Health degradation simulation
-│   └── src/main/resources/
-│       └── META-INF/spring/     # Spring Boot auto-configuration discovery
-│
-├── sample-application/          # Spring Boot application using the starter
-│   ├── src/main/java/
-│   │   └── com/youorg/sampleapp/
-│   │       ├── SampleApplication.java
-│   │       └── controller/
-│   │           └── HelloController.java
-│   ├── src/main/resources/
-│   │   └── application.properties
-│   ├── Dockerfile               # Container image definition
-│   └── pom.xml
-│
-├── docker-compose.yml           # Multi-container orchestration
-├── monitoring/
-│   └── prometheus.yml           # Prometheus scrape configuration
-└── pom.xml                      # Parent POM with BOM management
-```
+### 🌟 Production: Render (Free Tier) - Recommended
 
-## 🚀 Quick Start
+**The easiest way to deploy:**
+
+1. **Push to GitHub** ✅ (Already done)
+2. **Connect Render:** Visit `https://dashboard.render.com`
+3. **Import Repository:** Select `self-healing-platform`
+4. **Deploy:** Render automatically reads `render.yaml` and deploys
+5. **Access:** Your app runs at `https://self-healing-platform.onrender.com`
+
+**Test your deployment:**
+```bash
+curl https://self-healing-platform.onrender.com/actuator/health
+curl https://self-healing-platform.onrender.com/self-healing/history
+curl -X POST https://self-healing-platform.onrender.com/simulate/memory
+```
 
 ### Local Development
 
 #### 1. Clone and Build
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/artham-bhardwaj/self-healing-platform.git
 cd self-healing-platform
 mvn clean install
 ```
 
-#### 2. Run Sample Application
+#### 2. Run Application
 
 ```bash
 cd sample-application
 mvn spring-boot:run
 ```
 
-The application starts on `http://localhost:8080`
+Access: `http://localhost:8080`
 
 #### 3. Test Endpoints
 
 ```bash
-# Health endpoint
+# Health status
 curl http://localhost:8080/actuator/health
 
-# Health history (returns empty initially)
+# Health history
 curl http://localhost:8080/self-healing/history
 
-# Custom metrics
+# System metrics
 curl http://localhost:8080/metrics/system
 
-# Prometheus metrics (format)
-curl http://localhost:8080/actuator/prometheus
+# Simulate memory degradation
+curl -X POST http://localhost:8080/simulate/memory
+
+# Simulate CPU degradation  
+curl -X POST http://localhost:8080/simulate/cpu
 ```
 
-### Docker Deployment
-
-#### 1. Build and Run Full Stack
+### Local Docker Deployment
 
 ```bash
-# Navigate to project root
-cd self-healing-platform
-
-# Build and start all services (with verbose output)
+# Build and run with Docker Compose (includes Prometheus + Grafana)
 docker compose up --build
 
-# Or detached mode
-docker compose up -d --build
-```
+# Access application at http://localhost:8080
+# Optional monitoring:
+#   - Prometheus:  http://localhost:9090
+#   - Grafana:     http://localhost:3000 (admin/admin)
 
-#### 2. Access Services
-
-```
-Application:  http://localhost:8080
-Prometheus:   http://localhost:9090
-Grafana:      http://localhost:3000 (admin/admin)
-```
-
-#### 3. View Application Logs
-
-```bash
-# Follow application logs
-docker logs -f self-healing-app
-
-# View specific logs
-docker logs self-healing-app
-
-# Stop all containers
-docker compose down
-
-# Teardown including volumes
+# Stop all services
 docker compose down -v
 ```
 
 ## 📡 API Endpoints
 
-### Health Endpoints
+### Health & Status
 
-| Endpoint | Method | Description | Response |
-|----------|--------|-------------|----------|
-| `/actuator/health` | GET | Overall application health | `{"status":"UP","components":{...}}` |
-| `/actuator/health/{component}` | GET | Specific component health | Component-specific details |
-| `/actuator/prometheus` | GET | Prometheus metrics format | Prometheus text format |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/actuator/health` | GET | Overall application health |
+| `/actuator/health/{component}` | GET | Specific component health |
+| `/actuator/prometheus` | GET | Prometheus metrics format |
 
-### Self-Healing Endpoints
+### Self-Healing API
 
-| Endpoint | Method | Description | Response |
-|----------|--------|-------------|----------|
-| `/self-healing/history` | GET | Complete health history | `[{"timestamp":"...","state":"UP",...}]` |
-| `/metrics/system` | GET | System recovery metrics | `{"totalRecoveries":0,"lastRecoveryTime":null,...}` |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/self-healing/history` | GET | Complete health event history |
+| `/metrics/system` | GET | Recovery and degradation metrics |
 
-### Application Endpoints
+### Health Simulation (Testing)
 
-| Endpoint | Method | Description | Response |
-|----------|--------|-------------|----------|
-| `/` | GET | Hello endpoint | `"Hello, World!"` |
+| Endpoint | Method | Description | Effect |
+|----------|--------|-------------|--------|
+| `/simulate/memory` | POST | Trigger memory pressure | Sets state to DEGRADED → auto-recovers |
+| `/simulate/cpu` | POST | Trigger CPU pressure | Sets state to DEGRADED → auto-recovers |
 
-## ⚙️ Configuration
+### Application
 
-### application.properties (sample-application)
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Welcome endpoint |
 
-```properties
-# Application name
-spring.application.name=sample-application
+## 📊 Optional: Local Monitoring Stack
 
-# Health endpoint configuration
-management.endpoints.web.exposure.include=health,prometheus
-management.endpoint.health.show-details=always
-management.endpoint.health.show-components=always
-management.endpoint.health.cache.time-to-live=0
-
-# Custom health status order
-management.health.status.order=DOWN,OUT_OF_SERVICE,DEGRADED,UP
-```
-
-### prometheus.yml (monitoring)
-
-Prometheus is configured to scrape metrics from:
-- Application actuator endpoint at `http://app:8080/actuator/prometheus`
-- Default scrape interval: 15 seconds
-
-Enable Prometheus data persistence:
+For development and testing observability:
 
 ```bash
-# Create volume for Prometheus
-docker volume create prometheus-data
+# Start with Prometheus + Grafana (included in docker-compose.yml)
+docker compose up --build
 
-# Mount in docker-compose.yml:
-volumes:
-  - prometheus-data:/prometheus
+# Access services:
+#   - App:        http://localhost:8080
+#   - Prometheus: http://localhost:9090
+#   - Grafana:    http://localhost:3000 (admin/admin)
 ```
 
-## 🔍 Monitoring & Observability
+**Key Metrics Available:**
+- `recovered_total` - Total recovery events
+- `degradations_total` - Total degradation events
+- `last_recovery_time` - Last recovery timestamp
+- `last_degradation_time` - Last degradation timestamp
 
-### Prometheus Metrics
+See [screenshots/](/screenshots/) for example Grafana dashboards.
 
-Access metrics at: `http://localhost:9090/graph`
+## 📝 Resume Bullet Points
 
-Key metrics available:
-- `recovered_total` - Total number of recovery events
-- `degradations_total` - Total degradation events  
-- `last_recovery_time` - Timestamp of last recovery
-- `last_degradation_time` - Timestamp of last degradation
+Use these on your resume or LinkedIn:
 
-### Grafana Dashboards
-
-1. Access Grafana: `http://localhost:3000`
-2. Login: `admin` / `admin`
-3. Add Prometheus datasource: `http://prometheus:9090`
-4. Create dashboards to visualize recovery metrics
-
-### Health Component Details
-
-The application reports detailed health for:
-- **diskSpace** - Disk usage and thresholds
-- **ping** - PING check
-- **selfHealing** - Self-healing platform state
-- **ssl** - SSL certificate chain validation
+> **Self-Healing Platform** | Spring Boot 3.5, Docker, Render  
+> - Developed a custom Spring Boot starter library with conditional auto-configuration for resilience monitoring and automated recovery workflows
+> - Implemented CPU and memory degradation simulation APIs for testing self-healing mechanisms
+> - Built custom Prometheus metrics and visualization dashboards for operational observability
+> - Exposed health event history APIs (`/self-healing/history`) for system diagnostics and health tracking
+> - Containerized platform using Docker and deployed to Render with automatic health checks
+> - **Live Demo:** https://self-healing-platform.onrender.com
 
 ## 🛠️ Development
 
-### Module Details
+### Project Structure
 
-#### self-healing-starter
+```
+self-healing-platform/
+├── self-healing-starter/        # Custom Spring Boot library
+│   ├── autoconfig/              # Spring Boot auto-configuration
+│   ├── controller/              # REST endpoints
+│   ├── health/                  # HealthStateManager
+│   ├── history/                 # Health event history tracking
+│   ├── metrics/                 # Custom Prometheus metrics
+│   ├── recovery/                # Recovery orchestration
+│   └── simulation/              # Degradation simulation
+│
+├── sample-application/          # Sample Spring Boot app
+│   ├── SampleApplication.java
+│   ├── HelloController.java
+│   └── Dockerfile
+│
+├── docker-compose.yml           # Local dev stack
+├── render.yaml                  # Render deployment config
+├── monitoring/                  # Prometheus config
+└── pom.xml                      # Parent POM
+```
 
-A Spring Boot auto-configuration library that provides:
-
-- **AutoConfiguration** - Spring Boot 3 style auto-configuration with conditional bean registration
-- **Controllers** - REST endpoints for history and metrics
-- **Health Management** - HealthStateManager for state tracking
-- **Recovery** - RecoveryManager with pluggable recovery strategies
-- **Metrics** - Custom Micrometer metrics integration
-- **Simulation** - Health degradation simulation for testing
-- **Lifecycle** - StartupListener for initialization
-
-**Key Classes:**
-- `SelfHealingAutoConfiguration` - Auto-configuration entry point
-- `HistoryController` - Exposes health history API
-- `MetricsController` - Exposes custom recovery metrics  
-- `HealthHistoryManager` - Tracks health state changes
-- `RecoveryManager` - Orchestrates recovery strategies
-
-#### sample-application
-
-A sample Spring Boot application demonstrating:
-- Dependency on self-healing-starter
-- Standard Spring Boot structure
-- REST controller implementation
-- Actuator endpoint configuration
-
-### Build and Test
+### Quick Build
 
 ```bash
 # Full build with tests
@@ -259,183 +196,67 @@ mvn clean install
 # Skip tests
 mvn clean install -DskipTests
 
-# Build specific module
-cd self-healing-starter
-mvn clean install
-
-# Run tests only
-mvn test
-
-# View tests results
-cat self-healing-starter/target/surefire-reports/TEST-*.xml
+# Run application locally
+mvn spring-boot:run -pl sample-application
 ```
 
-### Important: Clean Before Docker Rebuild
+### Important: Clean Rebuild Before Deploy
 
 ```bash
-# Ensure JAR has latest code
-mvn clean install
-
-# Rebuild Docker image without cache
-docker compose down -v
-docker compose build --no-cache
-docker compose up -d
+mvn clean install               # Build everything fresh
+docker compose down -v          # Remove old containers
+docker compose build --no-cache # Fresh Docker build
+docker compose up -d            # Start services
 ```
 
-## 🐛 Troubleshooting
+## 🚀 Roadmap: Version 2.0 (Coming Next)
 
-### Issue: /self-healing/history returns 404
+### Automatic Resource Monitoring (Major Feature)
 
-**Solution:**
-1. Verify `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` exists:
-   ```bash
-   jar tf self-healing-starter/target/self-healing-starter-1.0.0.jar | grep AutoConfiguration.imports
-   ```
+Currently (v1.0):
+- Manual simulation: `/simulate/memory`, `/simulate/cpu`
+- API-driven health state degradation
 
-2. Ensure clean rebuild:
-   ```bash
-   mvn clean install
-   docker compose down -v
-   docker compose build --no-cache
-   ```
+**Version 2.0 will add:**
 
-3. Check logs for auto-configuration messages:
-   ```bash
-   docker logs self-healing-app | grep -i "SELF HEALING\|Configuration"
-   ```
+A new `ResourceMonitor` component that:
+- ✅ Continuously monitors Heap % and CPU %
+- ✅ Checks metrics every 5 seconds
+- ✅ Automatically sets state to `DEGRADED` when thresholds exceeded:
+  - Heap > 80%
+  - CPU > 75%
+- ✅ Automatically recovers when metrics normalize
+- ✅ No manual intervention required
 
-### Issue: Application won't start in Docker
+**Impact:** Transforms from a *simulation platform* to a *real self-monitoring platform*
 
-**Solution:**
-```bash
-# Check container logs
-docker logs self-healing-app
-
-# Verify JAR exists in image
-docker exec self-healing-app jar tf app.jar | grep -i "sample-application"
-
-# Rebuild from scratch
-docker compose down -v
-docker compose build --no-cache
-docker compose up
+```java
+// Pseudo-code for v2.0
+@Component
+public class ResourceMonitor {
+    
+    @Scheduled(fixedRate = 5000)
+    public void checkResources() {
+        long heapUsedPercent = getHeapPercentage();
+        long cpuPercent = getCPUPercentage();
+        
+        if (heapUsedPercent > 80 || cpuPercent > 75) {
+            healthStateManager.setCurrentState(DEGRADED);
+        } else {
+            healthStateManager.setCurrentState(UP);
+        }
+    }
+}
 ```
 
-### Issue: Metrics or History endpoints not available
+### Other v2.0 Enhancements
+- [ ] WebSocket notifications for health state changes
+- [ ] Pluggable recovery strategies
+- [ ] Distributed tracing with Spring Cloud Sleuth
+- [ ] Kubernetes deployment manifests (Helm charts)
+- [ ] Custom health indicators for business metrics
 
-**Solution:**
-```bash
-# Verify endpoints are exposed in application.properties
-management.endpoints.web.exposure.include=health,prometheus
-
-# Check what endpoints are actually registered
-curl http://localhost:8080/actuator | jq '._links | keys[]'
-
-# Verify self-healing starter is in classpath
-jar tf sample-application/target/sample-application-1.0.0.jar | grep -i "self-healing-starter"
-```
-
-## 📝 Building for Production
-
-### 1. Pre-Deployment Checklist
-
-```bash
-# Verify clean build
-mvn clean install -q
-
-# Check dependency security (requires OWASP plugin)
-mvn dependency-check:check
-
-# Run all tests
-mvn test
-
-# Verify Docker image builds
-docker compose build --no-cache app
-```
-
-### 2. Environment Configuration
-
-Create `application-prod.properties`:
-```properties
-spring.application.name=self-healing-platform-prod
-log.level=INFO
-management.endpoints.web.exposure.include=health,prometheus
-```
-
-### 3. Docker Image Tagging
-
-```bash
-# Build with version tag
-docker build -t youorg/self-healing-platform:1.0.0 sample-application/
-
-# Tag as latest
-docker tag youorg/self-healing-platform:1.0.0 youorg/self-healing-platform:latest
-
-# Push to registry
-docker push youorg/self-healing-platform:1.0.0
-```
-
-### 4. Deployment Script
-
-```bash
-#!/bin/bash
-set -e
-
-PROJECT_ROOT="/path/to/self-healing-platform"
-cd "$PROJECT_ROOT"
-
-echo "Building project..."
-mvn clean install -q
-
-echo "Building Docker image..."
-docker compose build --no-cache
-
-echo "Stopping existing containers..."
-docker compose down -v
-
-echo "Starting services..."
-docker compose up -d
-
-echo "Waiting for application startup..."
-sleep 10
-
-echo "Verifying endpoints..."
-curl -f http://localhost:8080/actuator/health || exit 1
-
-echo "✓ Deployment successful!"
-```
-
-## 🔄 Git Workflow
-
-### Committing Changes
-
-```bash
-# Stage changes
-git add .
-
-# Commit with descriptive message
-git commit -m "Add feature: [description]"
-
-# Push to remote
-git push origin main
-```
-
-### Common Commits
-
-```bash
-# After code changes
-git commit -m "Refactor health monitoring logic"
-
-# After README updates
-git commit -m "docs: Update deployment instructions"
-
-# After dependency updates
-git commit -m "chore: Update Spring Boot to 3.5.0"
-
-# Bug fixes
-git commit -m "fix: Resolve 404 on /self-healing/history endpoint"
-```
-
-## 📚 Technology Stack
+## 🛠️ Technology Stack
 
 | Component | Version | Purpose |
 |-----------|---------|---------|
@@ -443,43 +264,77 @@ git commit -m "fix: Resolve 404 on /self-healing/history endpoint"
 | Java | 21 | Language/Runtime |
 | Maven | 3.9+ | Build automation |
 | Docker | Latest | Containerization |
-| Prometheus | Latest | Metrics collection |
-| Grafana | Latest | Metrics visualization |
+| Prometheus | Latest | Metrics collection (optional) |
+| Grafana | Latest | Visualization (optional) |
 | Micrometer | Default | Metrics library |
-| Tomcat | 10.1.41 | Servlet container |
+
+## 🔄 Git Workflow
+
+```bash
+# Stage changes
+git add .
+
+# Commit with descriptive message
+git commit -m "feat: Add v1.0 production deployment"
+
+# Push to remote
+git push origin main
+```
+
+## 📞 Support & Troubleshooting
+
+### Issue: Endpoints return 404
+
+**Solution:**
+```bash
+# Ensure clean rebuild
+mvn clean install
+
+# Verify startup message
+docker logs self-healing-app | grep "SELF HEALING"
+
+# Check health component registration
+curl http://localhost:8080/actuator | jq '.components'
+```
+
+### Issue: Application won't start in Docker
+
+**Solution:**
+```bash
+# Check logs
+docker logs self-healing-app
+
+# Rebuild completely
+docker compose down -v
+docker compose build --no-cache
+docker compose up
+```
+
+### Issue: Metrics not appearing
+
+**Solution:**
+```bash
+# Verify actuator endpoints are exposed
+# Check: management.endpoints.web.exposure.include=health,prometheus
+
+# Check available endpoints
+curl http://localhost:8080/actuator | jq '._links | keys[]'
+```
 
 ## 📄 License
 
-[Specify your license here - e.g., MIT, Apache 2.0]
+MIT License
 
 ## 🤝 Contributing
 
-1. Create a feature branch: `git checkout -b feature/your-feature`
-2. Make changes and commit: `git commit -m "Add feature"`
-3. Push to branch: `git push origin feature/your-feature`
-4. Open a Pull Request
-
-## 📞 Support
-
-For issues, questions, or suggestions:
-- Check existing documentation in `/docs`
-- Review troubleshooting section above
-- Check application logs: `docker logs self-healing-app`
-- Verify configuration in `application.properties`
-
-## 🎯 Future Enhancements
-
-- [ ] Pluggable recovery strategies
-- [ ] Health degradation simulation via REST API
-- [ ] Advanced Grafana dashboards
-- [ ] Distributed tracing with Spring Cloud Sleuth
-- [ ] Health event WebSocket notifications
-- [ ] Custom health indicators
-- [ ] Circuit breaker integration
-- [ ] Kubernetes deployment manifests
+1. Create feature branch: `git checkout -b feature/your-feature`
+2. Commit changes: `git commit -m "feat: Add feature"`
+3. Push branch: `git push origin feature/your-feature`
+4. Open Pull Request
 
 ---
 
+**Status:** ✅ v1.0 Production Ready  
+**Deployed:** Render (https://self-healing-platform.onrender.com)  
 **Last Updated:** June 2, 2026  
-**Version:** 1.0.0  
-**Status:** Production Ready
+**Next:** v2.0 with Automatic Resource Monitoring

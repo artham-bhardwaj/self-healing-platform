@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: self-healing-platform
+    env: docker
+    plan: free
+    region: oregon
+    numInstances: 1
+    autoDeploy: true
+    dockerfilePath: ./sample-application/Dockerfile
+    dockerContext: ./sample-application
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+    healthCheckPath: /actuator/health
+    healthCheckInterval: 30
