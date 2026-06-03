@@ -34,5 +34,11 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
 
+    volumes:
+      - grafana-data:/var/lib/grafana
+
     depends_on:
       - prometheus
+
+volumes:
+  grafana-data:
