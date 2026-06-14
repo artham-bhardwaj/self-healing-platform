@@ -1,5 +1,70 @@
+# Maven
+
 target/
+
+# Spring Boot
+
+*.jar
+*.war
+*.ear
+
+# Logs
+
+*.log
+logs/
+
+# IDEs
+
 .idea/
 .vscode/
 *.iml
+.project
+.classpath
+.settings/
+
+# OS Files
+
 .DS_Store
+Thumbs.db
+
+# Build Artifacts
+
+BOOT-INF/
+dependency-reduced-pom.xml
+
+# Temporary Files
+
+*.tmp
+*.temp
+
+# Environment Variables
+
+.env
+.env.*
+
+# Maven Wrapper Cache
+
+.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ
+
+out/
+
+# Eclipse
+
+bin/
+
+# Mac/Linux
+
+*.swp
+*~
+
+# Generated Reports
+
+surefire-reports/
+jacoco.exec
+coverage/
+
+# Docker
+
+docker-data/
