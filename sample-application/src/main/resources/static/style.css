@@ -1,0 +1,371 @@
+body{
+background: linear-gradient(
+135deg,
+#0f172a 0%,
+#111827 100%
+);
+
+ 
+color: #f8fafc;
+
+font-family:
+    "Inter",
+    "Segoe UI",
+    sans-serif;
+
+min-height: 100vh;
+ 
+
+}
+
+/* Container */
+
+.container{
+max-width: 1400px;
+}
+
+/* Header */
+
+h1{
+font-weight: 800;
+letter-spacing: 1px;
+}
+
+.text-secondary{
+color: #94a3b8 !important;
+}
+
+/* Cards */
+
+.card{
+
+ 
+background:
+    rgba(30,41,59,0.85);
+
+backdrop-filter:
+    blur(12px);
+
+border:
+    1px solid #334155;
+
+border-radius: 18px;
+
+color: white;
+
+box-shadow:
+    0 8px 30px
+    rgba(0,0,0,0.25);
+
+transition:
+    all 0.25s ease;
+ 
+
+}
+
+.card:hover{
+
+ 
+transform:
+    translateY(-3px);
+
+box-shadow:
+    0 12px 35px
+    rgba(0,0,0,0.35);
+ 
+
+}
+
+/* Metric Cards */
+
+.stat-card{
+
+ 
+padding: 25px;
+
+text-align: center;
+ 
+
+}
+
+.stat-card h5{
+
+ 
+color: #cbd5e1;
+
+margin-bottom: 15px;
+
+font-weight: 600;
+
+font-size: 1rem;
+ 
+
+}
+
+#healthStatus,
+#degradations,
+#recoveries,
+#lastRefresh,
+#successRate{
+
+ 
+font-size: 2.1rem;
+
+font-weight: 800;
+ 
+
+}
+
+/* Buttons */
+
+.btn{
+
+ 
+border-radius: 12px;
+
+font-weight: 600;
+
+padding: 12px 18px;
+
+transition:
+    all 0.25s ease;
+ 
+
+}
+
+.btn:hover{
+
+ 
+transform:
+    translateY(-2px);
+ 
+
+}
+
+.btn-danger{
+
+ 
+background: #dc2626;
+
+border: none;
+ 
+
+}
+
+.btn-danger:hover{
+
+ 
+background: #b91c1c;
+ 
+
+}
+
+.btn-warning{
+
+ 
+background: #f59e0b;
+
+border: none;
+
+color: black;
+ 
+
+}
+
+.btn-warning:hover{
+
+ 
+background: #d97706;
+ 
+
+}
+
+/* Chart */
+
+#eventChart{
+
+ 
+width: 100% !important;
+
+height: 350px !important;
+ 
+
+}
+
+/* Tables */
+
+.table{
+
+ 
+margin-top: 15px;
+
+color: white;
+ 
+
+}
+
+.table-dark{
+
+ 
+--bs-table-bg: #1e293b;
+
+--bs-table-striped-bg: #273449;
+
+--bs-table-hover-bg: #334155;
+ 
+
+}
+
+.table td,
+.table th{
+
+ 
+vertical-align: middle;
+
+border-color: #334155;
+ 
+
+}
+
+.table thead th{
+
+ 
+color: #e2e8f0;
+
+font-weight: 700;
+ 
+
+}
+
+.table tbody tr{
+
+
+transition:
+    background 0.2s ease;
+
+
+}
+
+/* Badges */
+
+.badge{
+
+
+font-size: 0.85rem;
+
+padding: 8px 12px;
+
+border-radius: 10px;
+
+
+}
+
+/* Footer */
+
+footer{
+
+
+color: #64748b;
+
+font-size: 0.9rem;
+
+border-top:
+    1px solid #334155;
+
+padding-top: 20px;
+
+margin-top: 40px;
+
+
+}
+
+/* Architecture Section */
+
+.architecture-step{
+
+
+font-weight: 700;
+
+color: #e2e8f0;
+
+
+}
+
+/* Alerts */
+
+.alert{
+
+
+border: none;
+
+border-radius: 12px;
+
+box-shadow:
+    0 5px 20px
+    rgba(0,0,0,0.3);
+
+
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+
+
+width: 8px;
+
+
+}
+
+::-webkit-scrollbar-track{
+
+
+background: #1e293b;
+
+
+}
+
+::-webkit-scrollbar-thumb{
+
+
+background: #475569;
+
+border-radius: 8px;
+
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+
+background: #64748b;
+
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+
+#healthStatus,
+#degradations,
+#recoveries,
+#lastRefresh,
+#successRate{
+
+    font-size: 1.6rem;
+}
+
+h1{
+
+    font-size: 2rem;
+}
+
+#eventChart{
+
+    height: 280px !important;
+}
+
+
+}

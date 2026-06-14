@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelX | Self-Healing Platform</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container py-4">
+
+    <!-- Hero Section -->
+    <div class="hero-section text-center mb-5">
+
+        <h1 class="hero-title">
+            🛡️ SentinelX
+        </h1>
+
+        <p class="hero-subtitle">
+            Autonomous Self-Healing Platform
+        </p>
+
+        <p class="hero-description">
+            Detects application degradation, triggers automated recovery,
+            and provides real-time observability using Spring Boot,
+            Prometheus, Grafana, Micrometer and Docker.
+        </p>
+
+        <div class="hero-badges">
+
+            <span class="badge bg-success">
+                Healthy
+            </span>
+
+            <span class="badge bg-primary">
+                Real-Time Observability
+            </span>
+
+            <span class="badge bg-dark">
+                Spring Boot
+            </span>
+
+            <span class="badge bg-dark">
+                Prometheus
+            </span>
+
+            <span class="badge bg-dark">
+                Grafana
+            </span>
+
+            <span class="badge bg-dark">
+                Docker
+            </span>
+
+        </div>
+
+        <div class="mt-4">
+
+            <a href="https://github.com/artham-bhardwaj/self-healing-platform"
+               target="_blank"
+               class="btn btn-outline-light me-2">
+                GitHub
+            </a>
+
+            <a href="#"
+               class="btn btn-success">
+                Live Demo
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Metrics -->
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card h-100">
+                <h5>🟢 System Health</h5>
+                <h2 id="healthStatus">HEALTHY</h2>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card h-100">
+                <h5>⚠️ Degradations</h5>
+                <h2 id="degradations">0</h2>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card h-100">
+                <h5>🔄 Recoveries</h5>
+                <h2 id="recoveries">0</h2>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card h-100">
+                <h5>🎯 Recovery Rate</h5>
+                <h2 id="successRate">100%</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="card mt-4 p-4">
+
+        <h4 class="mb-3">
+            ⚙️ Simulation Controls
+        </h4>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <button class="btn btn-danger w-100"
+                        onclick="simulateCpu()">
+                    🔥 Simulate CPU Stress
+                </button>
+            </div>
+
+            <div class="col-md-6">
+                <button class="btn btn-warning w-100"
+                        onclick="simulateMemory()">
+                    🧠 Simulate Memory Stress
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Timeline + Activity Feed -->
+    <div class="row mt-4">
+
+        <div class="col-lg-8">
+
+            <div class="card p-4 h-100">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h4>
+                        📈 System Event Timeline
+                    </h4>
+
+                    <span class="badge bg-primary">
+                        Real-Time Monitoring
+                    </span>
+
+                </div>
+
+                <div style="height:350px;">
+                    <canvas id="eventChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card p-4 h-100">
+
+                <h4 class="mb-3">
+                    ⚡ Live Activity Feed
+                </h4>
+
+                <div id="activityFeed">
+
+                    <div class="activity-item">
+                        Waiting for events...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Architecture -->
+    <div class="card mt-4 p-4">
+
+        <h4 class="mb-4">
+            🏗️ Platform Architecture
+        </h4>
+
+        <div class="architecture-flow">
+
+            <div class="arch-box">
+                Spring Boot App
+            </div>
+
+            <div class="arch-arrow">
+                →
+            </div>
+
+            <div class="arch-box">
+                SentinelX Starter
+            </div>
+
+            <div class="arch-arrow">
+                →
+            </div>
+
+            <div class="arch-box">
+                Prometheus
+            </div>
+
+            <div class="arch-arrow">
+                →
+            </div>
+
+            <div class="arch-box">
+                Grafana
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- History -->
+    <div class="card mt-4 p-4">
+
+        <h4 class="mb-3">
+            📋 Health Event History
+        </h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-dark table-hover align-middle">
+
+                <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>State Transition</th>
+                    <th>Reason</th>
+                </tr>
+                </thead>
+
+                <tbody id="historyList">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5 mb-3 text-secondary">
+
+        <strong>SentinelX © 2026</strong>
+
+        <br>
+
+        Autonomous Self-Healing Platform
+
+        <br>
+
+        Spring Boot • Docker • Prometheus • Grafana • Micrometer
+
+    </footer>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
