@@ -3,6 +3,7 @@ services:
   app:
     build:
       context: ./sample-application
+      
 
     container_name: self-healing-app
 
