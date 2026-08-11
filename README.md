@@ -1,308 +1,170 @@
-# 🚀 Self-Healing Platform
+# SentinelX — Self-Healing Platform
 
-> A production-ready Spring Boot platform that detects degraded system states, triggers automated recovery workflows, tracks health events, and provides observability through Prometheus and Grafana.
+SentinelX is a Java 21 and Spring Boot 3.5 resilience-engineering prototype. It demonstrates the operational lifecycle of a self-healing service: detect degradation, create and track an incident, apply a recovery strategy, verify the outcome, and expose the result through health, metrics, APIs, and a live operations console.
 
-🌐 **Live Demo:** https://self-healing-platform.onrender.com
+## Highlights
 
-![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-green)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-orange)
-![Grafana](https://img.shields.io/badge/Grafana-Dashboard-yellow)
-![Render](https://img.shields.io/badge/Render-Deployed-purple)
+- Detects and records degraded health states.
+- Creates incidents with lifecycle data, severity, timestamps, and event timelines.
+- Deduplicates active incidents by component and incident type.
+- Applies strategy-based automated recovery, including dependency-aware recovery.
+- Provides CPU, memory, dependency-outage, and latency-spike simulations.
+- Exposes Spring Boot Actuator health and Prometheus-compatible metrics.
+- Includes a responsive operations console and a prototype-overview page.
 
----
-
-# 🎯 Project Overview
-
-Modern production systems rarely fail instantly. Instead, they gradually degrade due to:
-
-- High CPU utilization
-- Memory pressure
-- Resource exhaustion
-- Slow downstream services
-- Infrastructure instability
-
-This project simulates degraded application states, automatically detects unhealthy conditions, triggers recovery workflows, records operational events, and exposes observability metrics through Prometheus and Grafana.
-
-The platform demonstrates how self-healing systems can improve resilience and reduce manual intervention in modern cloud-native applications.
-
----
-
-# ✨ Key Features
-
-- ✅ Autonomous Health Monitoring
-- ✅ CPU Stress Simulation
-- ✅ Memory Stress Simulation
-- ✅ Automated Recovery Engine
-- ✅ Health Event History Tracking
-- ✅ Custom Spring Boot Starter
-- ✅ Prometheus Metrics Integration
-- ✅ Grafana Dashboards
-- ✅ Dockerized Monitoring Stack
-- ✅ Cloud Deployment on Render
-- ✅ Custom Health Indicators
-- ✅ Micrometer Metrics Export
-
----
-
-# 🏗️ Architecture
+## Architecture
 
 ```text
-                    ┌──────────────┐
-                    │    Client    │
-                    └──────┬───────┘
-                           │
-                           ▼
-                 ┌──────────────────┐
-                 │ Spring Boot App  │
-                 └──────┬───────────┘
-                        │
-         ┌──────────────┼──────────────┐
-         ▼              ▼              ▼
-
-  Health State    Recovery Engine   Metrics
-
-         ▼              ▼              ▼
-
-     Prometheus ───── Grafana ───── Dashboard
+Browser
+  └─ Operations Console
+       └─ Sample Application (Spring Boot)
+            ├─ Actuator health and Prometheus endpoint
+            └─ Self-Healing Starter
+                 ├─ HealthStateManager
+                 ├─ IncidentManager
+                 ├─ RecoveryEngine and recovery strategies
+                 ├─ MetricsManager
+                 ├─ HealthHistoryManager
+                 └─ Simulation and REST controllers
 ```
 
----
-
-# 📸 Screenshots
-
-## Grafana Monitoring Dashboard
-
-Real-time visualization of application health, degradation events, and recovery operations.
-
-### Dashboard Overview
-
-![Grafana Dashboard](screenshots/grafana-1.png)
-
-### Recovery Monitoring
-
-![Grafana Recovery Dashboard](screenshots/grafana-2.png)
-
----
-
-## Health Endpoints
-
-Application health exposed through Spring Boot Actuator and custom health indicators.
-
-### Health Endpoint
-
-![Health Endpoint](screenshots/health-endpoint1.png.png)
-
-### Health Endpoint Details
-
-![Health Endpoint Details](screenshots/health-endpoint2.png)
-
----
-
-## Health Event History API
-
-Tracks all health state transitions and automated recovery events for auditability and operational diagnostics.
-
-![Health History API](screenshots/history-api.png)
-
----
-
-## Custom Prometheus Metrics
-
-Custom Micrometer metrics exposed for Prometheus scraping and Grafana visualization.
-
-![Prometheus Metrics](screenshots/prometheus-metrics.png)
-
----
-
-## Dockerized Monitoring Stack
-
-Spring Boot application, Prometheus, and Grafana running together in a containerized environment.
-
-![Docker Stack](screenshots/docker-stack.png.png)
-
----
-
-## Cloud Deployment
-
-Live deployment hosted on Render.
-
-![Render Deployment](screenshots/render-deployment.png.png)
-
----
-
-# 🔥 Live Endpoints
-
-### Health Check
+## Incident lifecycle
 
 ```text
-https://self-healing-platform.onrender.com/actuator/health
+Detect → Create incident → Recover → Verify → Resolve / Escalate
 ```
 
-### Health History API
+The application keeps an in-memory history of incidents and health events for the current runtime. A simulation marks the system as degraded, creates or reuses the matching active incident, attempts recovery asynchronously, then records the resulting health transition.
+
+## Technology
+
+- Java 21
+- Spring Boot 3.5
+- Spring Boot Actuator
+- Micrometer / Prometheus
+- Maven
+- HTML, CSS, JavaScript, and Chart.js
+- Docker Compose, Prometheus, and Grafana
+
+## Project structure
 
 ```text
-https://self-healing-platform.onrender.com/self-healing/history
+.
+├── sample-application/       # Spring Boot application and web console
+├── self-healing-starter/     # Reusable self-healing library
+├── monitoring/prometheus.yml # Prometheus scrape configuration
+├── docker-compose.yml        # App, Prometheus, and Grafana stack
+├── render.yaml               # Render deployment definition
+└── pom.xml                   # Multi-module Maven build
 ```
 
-### Prometheus Metrics
+## Run locally
 
-```text
-https://self-healing-platform.onrender.com/actuator/prometheus
-```
+### Prerequisites
 
-### Memory Stress Simulation
+- JDK 21
+- Maven 3.9+
+- Docker and Docker Compose (optional, for the monitoring stack)
 
-```text
-https://self-healing-platform.onrender.com/simulate/memory
-```
+### Start the application
 
-### CPU Stress Simulation
-
-```text
-https://self-healing-platform.onrender.com/simulate/cpu
-```
-
----
-
-# ⚙️ How It Works
-
-### 1. Degradation Simulation
-
-The platform can simulate unhealthy application states through:
-
-- Memory pressure generation
-- CPU-intensive workloads
-
-### 2. Health Detection
-
-Custom health indicators continuously evaluate system state and update application health.
-
-### 3. Automated Recovery
-
-When degradation is detected:
-
-- System state changes to DEGRADED
-- Recovery workflow is triggered
-- Metrics are updated
-- Recovery events are recorded
-
-### 4. Observability
-
-The platform exposes:
-
-- Health status
-- Recovery metrics
-- Degradation metrics
-- Event history
-
-through Prometheus and Grafana.
-
----
-
-# 🛠️ Tech Stack
-
-| Layer | Technology |
-|---------|------------|
-| Language | Java 21 |
-| Framework | Spring Boot 3.5 |
-| Monitoring | Prometheus |
-| Dashboarding | Grafana |
-| Metrics | Micrometer |
-| Containerization | Docker |
-| Deployment | Render |
-| Build Tool | Maven |
-
----
-
-# 📂 Project Structure
-
-```text
-self-healing-platform/
-│
-├── self-healing-starter/
-│   ├── health/
-│   ├── recovery/
-│   ├── metrics/
-│   ├── history/
-│   └── controller/
-│
-├── sample-application/
-│
-├── monitoring/
-│   ├── prometheus.yml
-│
-├── screenshots/
-│
-├── docker-compose.yml
-│
-└── README.md
-```
-
----
-
-# 📝 Resume Highlights
-
-- Built a production-ready self-healing platform using Java 21 and Spring Boot 3.5.
-- Developed a custom Spring Boot starter enabling health monitoring, degradation detection, and automated recovery workflows.
-- Implemented CPU and memory stress simulations to validate resilience mechanisms under degraded conditions.
-- Exposed custom Micrometer metrics and integrated Prometheus + Grafana for end-to-end observability.
-- Designed health history APIs for tracking state transitions and recovery actions.
-- Containerized the complete monitoring stack using Docker.
-- Deployed a live cloud-hosted demo on Render.
-
----
-
-# 🚀 Future Enhancements
-
-## Version 2.0
-
-- Automatic CPU Threshold Monitoring
-- Automatic Heap Usage Monitoring
-- Pluggable Recovery Strategies
-- Email / Slack Alerting
-- WebSocket Health Notifications
-- Kubernetes Deployment
-- Distributed Service Monitoring
-- Circuit Breaker Integration
-- AI-based Failure Prediction
-
----
-
-# 🚀 Running Locally
-
-### Clone Repository
-
-```bash
-git clone https://github.com/<your-username>/self-healing-platform.git
-cd self-healing-platform
-```
-
-### Build Project
+From the repository root:
 
 ```bash
 mvn clean install
+mvn -pl sample-application spring-boot:run
 ```
 
-### Start Monitoring Stack
+Open the application at:
+
+- Operations console: [http://localhost:8080/](http://localhost:8080/)
+- Prototype overview: [http://localhost:8080/prototype-overview.html](http://localhost:8080/prototype-overview.html)
+- Health details: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
+
+### Start with Docker Compose
+
+The application Docker image uses the JAR produced by Maven, so build the project first:
 
 ```bash
+mvn clean package
 docker compose up --build -d
 ```
 
-### Access Services
+Services are available at:
 
-| Service | URL |
-|----------|------|
-| Application | http://localhost:8080 |
-| Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3000 |
+| Service | URL | Default credentials |
+| --- | --- | --- |
+| SentinelX application | [http://localhost:8080](http://localhost:8080) | — |
+| Prometheus | [http://localhost:9090](http://localhost:9090) | — |
+| Grafana | [http://localhost:3000](http://localhost:3000) | `admin` / `admin` |
 
----
+Stop the stack with:
 
-# 📄 License
+```bash
+docker compose down
+```
 
-MIT License
+## API reference
 
-Feel free to fork, learn from, and extend this project.
+### Health and observability
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/actuator/health` | Actuator health, including self-healing state. |
+| GET | `/actuator/prometheus` | Prometheus-format metrics. |
+| GET | `/metrics/system` | Application health and recovery summary. |
+
+### Incidents and recovery
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/self-healing/incidents` | All tracked incidents. |
+| GET | `/self-healing/incidents/active` | Incidents that are still active. |
+| GET | `/self-healing/incidents/summary` | Incident counts and critical-active count. |
+| GET | `/self-healing/incidents/{id}` | One incident by ID. |
+| GET | `/self-healing/history` | Health-state transition history. |
+| GET | `/self-healing/recovery/status` | Current recovery and incident status. |
+| GET | `/self-healing/recovery/trigger?incidentId={id}` | Manually attempt recovery for an incident. |
+| GET | `/self-healing/recovery/reset` | Reset health and resolve tracked incidents. |
+
+### Failure simulations
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/self-healing/simulate` | List supported scenarios. |
+| GET | `/self-healing/simulate/trigger?scenarioName={name}` | Start a simulation and automated recovery. |
+
+Supported scenario names: `cpu-spike`, `memory-pressure`, `dependency-failure`, and `latency-spike`.
+
+Example:
+
+```bash
+curl 'http://localhost:8080/self-healing/simulate/trigger?scenarioName=cpu-spike'
+```
+
+## Operations console
+
+The console gives an operational view of the current in-memory runtime state:
+
+- System health, active incidents, recovery rate, and MTTR
+- One-click failure simulations
+- Degradation and recovery KPI totals
+- Incident trend chart and operational summary
+- Selectable incident history with lifecycle details
+- Health-event recovery timeline
+
+## Test
+
+Run the full multi-module test suite:
+
+```bash
+mvn test
+```
+
+## Current scope
+
+This is a portfolio-grade prototype, not a production incident-management service. Incident and event data is intentionally in memory and is reset when the application restarts. Natural next steps include persistent storage, alert routing, authenticated access, retry policy controls, distributed-service topology, and production deployment policies.
+
+## License
+
+MIT License. You are welcome to fork, learn from, and extend the project.

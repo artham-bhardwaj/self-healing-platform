@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SentinelX | Prototype Overview</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="story-page">
+<div class="story-shell">
+    <header class="story-header">
+        <div class="story-brand">
+            <div class="story-mark">S</div>
+            <div>
+                <div class="eyebrow">Self-healing platform</div>
+                <h1>SentinelX</h1>
+            </div>
+        </div>
+        <nav class="top-nav" aria-label="Prototype pages">
+            <a class="nav-link active" href="prototype-overview.html">Prototype overview</a>
+            <a class="nav-link" href="index.html">Operations console</a>
+        </nav>
+    </header>
+
+    <main class="story-content">
+        <section class="story-hero">
+            <div>
+                <p class="story-kicker">Version 1.0 prototype</p>
+                <h1>Resilience engineering for modern cloud systems.</h1>
+                <p class="story-sub">
+                    SentinelX is a prototype self-healing platform designed to show how an application can detect degradation,
+                    understand service health, track incidents, recover automatically, and surface operational insight in a way that feels
+                    realistic for production engineering teams.
+                </p>
+                <div class="story-actions">
+                    <a class="primary-button" href="index.html">Open console</a>
+                    <a class="secondary-button" href="#roadmap">View roadmap</a>
+                </div>
+            </div>
+
+            <aside class="story-metric-panel">
+                <div class="eyebrow">Current prototype health</div>
+                <div class="metric-grid">
+                    <div class="metric-box">
+                        <div class="label">Version</div>
+                        <strong>1.0</strong>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Stack</div>
+                        <strong>Java 21</strong>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Framework</div>
+                        <strong>Spring Boot 3.5</strong>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Status</div>
+                        <strong>Live</strong>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="story-section">
+            <h2>What the prototype includes</h2>
+            <div class="story-grid">
+                <article class="story-card">
+                    <h3>Operational intelligence</h3>
+                    <ul>
+                        <li>Health-state detection using Spring Boot actuator and custom self-healing monitoring</li>
+                        <li>Incident creation and lifecycle tracking for degraded services</li>
+                        <li>Deduplication to avoid duplicate incident work across the same component and failure type</li>
+                        <li>Recovery orchestration with strategy-based automatic remediation</li>
+                    </ul>
+                </article>
+
+                <article class="story-card">
+                    <h3>Engineering workflows</h3>
+                    <ul>
+                        <li>CPU, memory, dependency, and latency simulation scenarios</li>
+                        <li>Live operational dashboard with summary metrics and active incident cards</li>
+                        <li>Incident detail and recovery history for operational review</li>
+                        <li>Micrometer and Prometheus-ready observability signals</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="story-section" id="roadmap">
+            <h2>Roadmap</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="pill">2026 Q1</span>
+                    <h3>Prototype foundation</h3>
+                    <p>Basic health monitoring, incidents, dashboard, and automated recovery logic were established.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="pill">2026 Q2</span>
+                    <h3>Operational hardening</h3>
+                    <p>Expand detection tiers, improve strategy selection, and connect telemetry to richer incident analytics.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="pill">2026 Q3</span>
+                    <h3>Platform maturity</h3>
+                    <p>Add persistent incident storage, alert routing, retry policies, and real multi-service topology modeling.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="pill">2026 Q4</span>
+                    <h3>Production-ready offering</h3>
+                    <p>Introduce role-based dashboards, policy engines, SRE workflows, and enterprise observability integrations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <h2>Why this matters</h2>
+            <div class="story-grid">
+                <article class="story-card">
+                    <h3>For engineering teams</h3>
+                    <p class="story-sub">
+                        This prototype demonstrates how reliability engineering can move from reactive firefighting to proactive,
+                        measurable system healing. It reflects real concerns around degraded services, response time, and automated recovery.
+                    </p>
+                </article>
+
+                <article class="story-card team-card">
+                    <h3>Built by Artham Bhardwaj</h3>
+                    <p class="story-sub">
+                        Built as a portfolio-grade engineering project focused on resilience, distributed system behavior, cloud-native patterns,
+                        and platform thinking.
+                    </p>
+                    
+                </article>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
