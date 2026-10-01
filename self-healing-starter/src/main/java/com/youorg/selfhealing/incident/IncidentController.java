@@ -33,10 +33,13 @@ public class IncidentController {
     public Map<String, Object> getSummary() {
         List<Incident> incidents = incidentManager.getIncidentHistory();
         List<Incident> active = incidentManager.getActiveIncidents();
+        long resolvedIncidents = incidents.stream()
+                .filter(incident -> incident.getStatus() == IncidentStatus.RESOLVED)
+                .count();
         Map<String, Object> summary = new HashMap<>();
         summary.put("totalIncidents", incidents.size());
         summary.put("activeIncidents", active.size());
-        summary.put("resolvedIncidents", incidents.size() - active.size());
+        summary.put("resolvedIncidents", resolvedIncidents);
         summary.put("criticalActiveIncidents", active.stream().filter(i -> "CRITICAL".equals(i.getSeverity())).count());
         return summary;
     }
